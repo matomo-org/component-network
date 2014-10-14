@@ -330,61 +330,6 @@ class IPUtils
     }
 
     /**
-     * Returns the most accurate IP address availble for the current user, in
-     * IPv4 format. This could be the proxy client's IP address.
-     *
-     * @return string IP address in presentation format.
-     */
-    public static function getIpFromHeader()
-    {
-        $clientHeaders = @Config::getInstance()->General['proxy_client_headers'];
-        if (!is_array($clientHeaders)) {
-            $clientHeaders = array();
-        }
-
-        $default = '0.0.0.0';
-        if (isset($_SERVER['REMOTE_ADDR'])) {
-            $default = $_SERVER['REMOTE_ADDR'];
-        }
-
-        $ipString = self::getNonProxyIpFromHeader($default, $clientHeaders);
-        return self::sanitizeIp($ipString);
-    }
-
-    /**
-     * Returns a non-proxy IP address from header.
-     *
-     * @param string $default Default value to return if there no matching proxy header.
-     * @param array $proxyHeaders List of proxy headers.
-     * @return string
-     */
-    public static function getNonProxyIpFromHeader($default, $proxyHeaders)
-    {
-        $proxyIps = array();
-        $config = Config::getInstance()->General;
-        if (isset($config['proxy_ips'])) {
-            $proxyIps = $config['proxy_ips'];
-        }
-        if (!is_array($proxyIps)) {
-            $proxyIps = array();
-        }
-
-        $proxyIps[] = $default;
-
-        // examine proxy headers
-        foreach ($proxyHeaders as $proxyHeader) {
-            if (!empty($_SERVER[$proxyHeader])) {
-                $proxyIp = self::getLastIpFromList($_SERVER[$proxyHeader], $proxyIps);
-                if (strlen($proxyIp) && stripos($proxyIp, 'unknown') === false) {
-                    return $proxyIp;
-                }
-            }
-        }
-
-        return $default;
-    }
-
-    /**
      * Returns the last IP address in a comma separated list, subject to an optional exclusion list.
      *
      * @param string $csv Comma separated list of elements.
