@@ -139,17 +139,6 @@ class IPUtils
     }
 
     /**
-     * Returns an IPv4 address from a 'mapped' IPv6 address.
-     *
-     * @param string $ip eg, `'::ffff:192.0.2.128'`
-     * @return string eg, `'192.0.2.128'`
-     */
-    public static function getIPv4FromMappedIPv6($ip)
-    {
-        return substr($ip, strlen(self::MAPPED_IPv4_START));
-    }
-
-    /**
      * Get low and high IP addresses for a specified range.
      *
      * @param array $ipRange An IP address range in presentation format.

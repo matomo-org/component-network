@@ -76,6 +76,29 @@ class IP
     }
 
     /**
+     * Returns the IP address as an IPv4 string when possible.
+     *
+     * Some IPv6 can be transformed to IPv4 addresses, for example
+     * IPv4-mapped IPv6 addresses: `::ffff:192.168.0.1` will return `192.168.0.1`.
+     *
+     * @return string|null IPv4 string address e.g. `'192.0.2.128'` or null if this is not an IPv4 address.
+     */
+    public function toIPv4String()
+    {
+        $str = $this->toString();
+
+        if ($this->isMappedIPv4()) {
+            return substr($str, strlen(self::MAPPED_IPv4_START));
+        }
+
+        if (! $this->isIPv4()) {
+            return null;
+        }
+
+        return $str;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
