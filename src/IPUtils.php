@@ -9,14 +9,10 @@
 namespace Piwik\IP;
 
 /**
- * IP address helper (for both IPv4 and IPv6).
+ * IP address utilities (for both IPv4 and IPv6).
  *
- * As a matter of naming convention, we use `$ip` for the network address format
- * and `$ipString` for the presentation format (i.e., human-readable form).
- *
- * We're not using the network address format (in_addr) for socket functions,
- * so we don't have to worry about incompatibility with Windows UNICODE
- * and inetPtonW().
+ * As a matter of naming convention, we use `$ip` for the binary format (network address format)
+ * and `$ipString` for the string/presentation format (i.e., human-readable form).
  */
 class IPUtils
 {
@@ -140,37 +136,6 @@ class IPUtils
         // use @inet_ntop() because it throws an exception and E_WARNING on invalid input
         $ipStr = @inet_ntop($ip);
         return $ipStr === false ? '0.0.0.0' : $ipStr;
-    }
-
-    /**
-     * Converts an IP address (in network address format) to presentation format.
-     * This is a backward compatibility function for code that only expects
-     * IPv4 addresses (i.e., doesn't support IPv6).
-     *
-     * This function does not support the long (or its string representation)
-     * returned by the built-in ip2long() function, from Piwik 1.3 and earlier.
-     *
-     * @param string $ip IPv4 address in network address format.
-     * @return string IP address in presentation format.
-     */
-    public static function long2ip($ip)
-    {
-        // IPv4
-        if (strlen($ip) == 4) {
-            return self::N2P($ip);
-        }
-
-        // IPv6 - transitional address?
-        if (strlen($ip) == 16) {
-            if (substr_compare($ip, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff", 0, 12) === 0
-                || substr_compare($ip, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", 0, 12) === 0
-            ) {
-                // remap 128-bit IPv4-mapped and IPv4-compat addresses
-                return self::N2P(substr($ip, 12));
-            }
-        }
-
-        return '0.0.0.0';
     }
 
     /**

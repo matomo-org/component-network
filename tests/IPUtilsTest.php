@@ -221,62 +221,6 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Dataprovider for long2ip test
-     */
-    public function getLong2IPTestData()
-    {
-        // a valid network address is either 4 or 16 bytes; those lines are intentionally left blank ;)
-        return array(
-            // invalid
-            array(null, '0.0.0.0'),
-            array("", '0.0.0.0'),
-
-            // IPv4
-            array("\x7f\x00\x00\x01", '127.0.0.1'),
-
-            // IPv4-compatible (this transitional format is deprecated in RFC 4291, section 2.5.5.1)
-            array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xa8\x01\x01", '192.168.1.1'),
-
-            // IPv4-mapped (RFC 4291, 2.5.5.2)
-            array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xc0\xa8\x01\x02", '192.168.1.2'),
-
-            // other IPv6 address
-            array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\x00\xc0\xa8\x01\x03", '0.0.0.0'),
-            array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xc0\xa8\x01\x04", '0.0.0.0'),
-            array("\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xa8\x01\x05", '0.0.0.0'),
-
-            /*
-             * We assume all stored IP addresses (pre-Piwik 1.4) were converted from UNSIGNED INT to VARBINARY.
-             * The following is just for informational purposes.
-             */
-
-            // 192.168.1.0
-            array('-1062731520', '0.0.0.0'),
-            array('3232235776', '0.0.0.0'),
-
-            // 10.10.10.10
-            array('168430090', '0.0.0.0'),
-
-            // 0.0.39.15 - this is the ambiguous case (i.e., 4 char string)
-            array('9999', '57.57.57.57'),
-            array("\x39\x39\x39\x39", '57.57.57.57'),
-
-            // 0.0.3.231
-            array('999', '0.0.0.0'),
-            array("\x39\x39\x39", '0.0.0.0'),
-        );
-    }
-
-    /**
-     * @dataProvider getLong2IPTestData
-     * @group Core
-     */
-    public function testLong2ip($N, $P)
-    {
-        $this->assertEquals($P, IPUtils::long2ip($N), bin2hex($N));
-    }
-
-    /**
      * Dataprovider for ip range test
      */
     public function getIPsForRangeTest()
