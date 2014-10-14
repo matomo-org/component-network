@@ -221,82 +221,6 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getP2NTestData
-     * @group Core
-     */
-    public function testPrettyPrint($P, $N)
-    {
-        $this->assertEquals($P, IPUtils::prettyPrint($N), "$P vs" . IPUtils::N2P($N));
-    }
-
-    /**
-     * @dataProvider getN2PTestData
-     * @group Core
-     */
-    public function testPrettyPrintInvalidInput($N)
-    {
-        $this->assertEquals("0.0.0.0", IPUtils::prettyPrint($N), bin2hex($N));
-    }
-
-    /**
-     * Dataprovider for IP4 test data
-     */
-    public function getIPv4Data()
-    {
-        // a valid network address is either 4 or 16 bytes; those lines are intentionally left blank ;)
-        return array(
-            // invalid
-            array(null, false),
-            array("", false),
-
-            // IPv4
-            array("\x00\x00\x00\x00", true),
-            array("\x7f\x00\x00\x01", true),
-
-            // IPv4-compatible (this transitional format is deprecated in RFC 4291, section 2.5.5.1)
-            array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xa8\x01\x01", true),
-
-            // IPv4-mapped (RFC 4291, 2.5.5.2)
-            array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xc0\xa8\x01\x02", true),
-
-            // other IPv6 address
-            array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\x00\xc0\xa8\x01\x03", false),
-            array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xc0\xa8\x01\x04", false),
-            array("\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xc0\xa8\x01\x05", false),
-
-            /*
-             * We assume all stored IP addresses (pre-Piwik 1.4) were converted from UNSIGNED INT to VARBINARY.
-             * The following is just for informational purposes.
-             */
-
-            // 192.168.1.0
-            array('-1062731520', false),
-            array('3232235776', false),
-
-            // 10.10.10.10
-            array('168430090', false),
-
-            // 0.0.39.15 - this is the ambiguous case (i.e., 4 char string)
-            array('9999', true),
-            array("\x39\x39\x39\x39", true),
-
-            // 0.0.3.231
-            array('999', false),
-            array("\x39\x39\x39", false),
-        );
-
-    }
-
-    /**
-     * @dataProvider getIPv4Data
-     * @group Core
-     */
-    public function testIsIPv4($ip, $bool)
-    {
-        $this->assertEquals($bool, IPUtils::isIPv4($ip), bin2hex($ip));
-    }
-
-    /**
      * Dataprovider for long2ip test
      */
     public function getLong2IPTestData()
@@ -349,10 +273,7 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
      */
     public function testLong2ip($N, $P)
     {
-        $this->markTestSkipped('Using Common class');
         $this->assertEquals($P, IPUtils::long2ip($N), bin2hex($N));
-        // this is our compatibility function
-        $this->assertEquals($P, Common::long2ip($N), bin2hex($N));
     }
 
     /**
@@ -581,21 +502,5 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
 
         // with excluded Ips
         $this->assertEquals($expected, IPUtils::getLastIpFromList($csv . ', 10.10.10.10', array('10.10.10.10')));
-    }
-
-    /**
-     * @group Core
-     */
-    public function testGetHostByAddr()
-    {
-        $this->markTestSkipped('Using SettingsServer class');
-        $hosts = array('localhost', 'localhost.localdomain', strtolower(@php_uname('n')), '127.0.0.1');
-        $host = IPUtils::getHostByAddr('127.0.0.1');
-        $this->assertTrue(in_array(strtolower($host), $hosts), $host . ' -> localhost');
-
-        if (!SettingsServer::isWindows() || PHP_VERSION >= '5.3') {
-            $hosts = array('ip6-localhost', 'localhost', 'localhost.localdomain', strtolower(@php_uname('n')), '::1');
-            $this->assertTrue(in_array(strtolower(IPUtils::getHostByAddr('::1')), $hosts), '::1 -> ip6-localhost');
-        }
     }
 }

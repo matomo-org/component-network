@@ -143,46 +143,6 @@ class IPUtils
     }
 
     /**
-     * Alias for {@link N2P()}.
-     *
-     * @param string $ip IP address in network address format.
-     * @return string IP address in presentation format.
-     */
-    public static function prettyPrint($ip)
-    {
-        return self::N2P($ip);
-    }
-
-    /**
-     * Returns true if `$ip` is an IPv4, IPv4-compat, or IPv4-mapped address, false
-     * if otherwise.
-     *
-     * @param string $ip IP address in network address format.
-     * @return bool True if IPv4, else false.
-     */
-    public static function isIPv4($ip)
-    {
-        // in case mbstring overloads strlen function
-        $strlen = function_exists('mb_orig_strlen') ? 'mb_orig_strlen' : 'strlen';
-
-        // IPv4
-        if ($strlen($ip) == 4) {
-            return true;
-        }
-
-        // IPv6 - transitional address?
-        if ($strlen($ip) == 16) {
-            if (substr_compare($ip, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff", 0, 12) === 0
-                || substr_compare($ip, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", 0, 12) === 0
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Converts an IP address (in network address format) to presentation format.
      * This is a backward compatibility function for code that only expects
      * IPv4 addresses (i.e., doesn't support IPv6).
@@ -211,29 +171,6 @@ class IPUtils
         }
 
         return '0.0.0.0';
-    }
-
-    /**
-     * Returns true if $ip is an IPv6 address, false if otherwise. This function does
-     * a naive check. It assumes that whatever format $ip is in, it is well-formed.
-     *
-     * @param string $ip
-     * @return bool
-     */
-    public static function isIPv6($ip)
-    {
-        return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
-    }
-
-    /**
-     * Returns true if $ip is a IPv4 mapped address, false if otherwise.
-     *
-     * @param string $ip
-     * @return bool
-     */
-    public static function isMappedIPv4($ip)
-    {
-        return substr($ip, 0, strlen(self::MAPPED_IPv4_START)) === self::MAPPED_IPv4_START;
     }
 
     /**
@@ -349,19 +286,5 @@ class IPUtils
             }
         }
         return trim(Common::sanitizeInputValue($csv));
-    }
-
-    /**
-     * Retirms the hostname for a given IP address.
-     *
-     * @param string $ipStr Human-readable IP address.
-     * @return string The hostname or unmodified $ipStr on failure.
-     */
-    public static function getHostByAddr($ipStr)
-    {
-        // PHP's reverse lookup supports ipv4 and ipv6
-        // except on Windows before PHP 5.3
-        $host = strtolower(@gethostbyaddr($ipStr));
-        return $host === '' ? $ipStr : $host;
     }
 }
