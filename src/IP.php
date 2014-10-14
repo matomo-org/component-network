@@ -35,8 +35,8 @@ class IP
 
     /**
      * @see fromStringIP
-     * @param string $ip IP address in a binary format.
      *
+     * @param string $ip IP address in a binary format.
      * @return IP
      */
     public static function fromBinaryIP($ip)
@@ -46,8 +46,8 @@ class IP
 
     /**
      * @see fromBinaryIP
-     * @param string $ip IP address in a string format (X.X.X.X).
      *
+     * @param string $ip IP address in a string format (X.X.X.X).
      * @return IP
      */
     public static function fromStringIP($ip)
@@ -177,7 +177,6 @@ class IP
      * An IPv4-mapped address should be range checked with an IPv4-mapped address range.
      *
      * @param array|string $ipRange IP address range (string or array containing min and max IP addresses)
-     *
      * @return bool
      */
     public function isInRange($ipRange)
@@ -219,7 +218,6 @@ class IP
      * An IPv4-mapped address should be range checked with IPv4-mapped address ranges.
      *
      * @param array $ipRanges List of IP address ranges (strings or arrays containing min and max IP addresses).
-     *
      * @return bool True if in any of the specified IP address ranges; false otherwise.
      */
     public function isInRanges(array $ipRanges)

@@ -109,10 +109,10 @@ class IPUtils
     }
 
     /**
-     * Converts an IP address in presentation format to network address format.
+     * Converts an IP address in string/presentation format to binary/network address format.
      *
-     * @param string $ipString IP address, either IPv4 or IPv6, e.g., `"127.0.0.1"`.
-     * @return string Binary-safe string, e.g., `"\x7F\x00\x00\x01"`.
+     * @param string $ipString IP address, either IPv4 or IPv6, e.g. `'127.0.0.1'`.
+     * @return string Binary-safe string, e.g. `"\x7F\x00\x00\x01"`.
      */
     public static function P2N($ipString)
     {
@@ -122,12 +122,10 @@ class IPUtils
     }
 
     /**
-     * Convert network address format to presentation format.
+     * Convert binary/network address format to string/presentation format.
      *
-     * See also {@link prettyPrint()}.
-     *
-     * @param string $ip IP address in network address format.
-     * @return string IP address in presentation format.
+     * @param string $ip IP address in binary/network address format, e.g. `"\x7F\x00\x00\x01"`.
+     * @return string IP address in string format, e.g. `'127.0.0.1'`.
      */
     public static function N2P($ip)
     {
@@ -139,8 +137,8 @@ class IPUtils
     /**
      * Get low and high IP addresses for a specified IP range.
      *
-     * @param array $ipRange An IP address range in presentation format.
-     * @return array|null  Array `array($lowIp, $highIp)` in network address format, or null on failure.
+     * @param array $ipRange An IP address range in string format, e.g. `'192.168.1.1/24'`.
+     * @return array|null Array `array($lowIp, $highIp)` in binary format, or null on failure.
      */
     public static function getIPRangeBounds($ipRange)
     {
