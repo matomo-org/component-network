@@ -217,20 +217,17 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
      */
     public function testN2PinvalidInput($N)
     {
-        $this->assertEquals("0.0.0.0", IPUtils::N2P($N), bin2hex($N));
+        $this->assertEquals('0.0.0.0', IPUtils::N2P($N), bin2hex($N));
     }
 
-    /**
-     * Dataprovider for ip range test
-     */
-    public function getIPsForRangeTest()
+    public function getBoundsForIPRangeTest()
     {
         return array(
 
             // invalid ranges
-            array(null, false),
-            array('', false),
-            array('0', false),
+            array(null, null),
+            array('', null),
+            array('0', null),
 
             // single IPv4
             array('127.0.0.1', array("\x7f\x00\x00\x01", "\x7f\x00\x00\x01")),
@@ -301,121 +298,11 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getIPsForRangeTest
-     * @group Core
+     * @dataProvider getBoundsForIPRangeTest
      */
-    public function testGetIpsForRange($range, $expected)
+    public function testGetIPRangeBounds($range, $expected)
     {
-        $this->assertEquals($expected, IPUtils::getIpsForRange($range));
-    }
-
-    /**
-     * Dataprovider for testIsIpInRange
-     */
-    public function getIpsInRangeData()
-    {
-        return array(
-            array('192.168.1.10', array(
-                '192.168.1.9'         => false,
-                '192.168.1.10'        => true,
-                '192.168.1.11'        => false,
-
-                // IPv6 addresses (including IPv4 mapped) have to be compared against IPv6 address ranges
-                '::ffff:192.168.1.10' => false,
-            )),
-
-            array('::ffff:192.168.1.10', array(
-                '::ffff:192.168.1.9'                      => false,
-                '::ffff:192.168.1.10'                     => true,
-                '::ffff:c0a8:010a'                        => true,
-                '0000:0000:0000:0000:0000:ffff:c0a8:010a' => true,
-                '::ffff:192.168.1.11'                     => false,
-
-                // conversely, IPv4 addresses have to be compared against IPv4 address ranges
-                '192.168.1.10'                            => false,
-            )),
-
-            array('192.168.1.10/32', array(
-                '192.168.1.9'  => false,
-                '192.168.1.10' => true,
-                '192.168.1.11' => false,
-            )),
-
-            array('192.168.1.10/31', array(
-                '192.168.1.9'  => false,
-                '192.168.1.10' => true,
-                '192.168.1.11' => true,
-                '192.168.1.12' => false,
-            )),
-
-            array('192.168.1.128/25', array(
-                '192.168.1.127' => false,
-                '192.168.1.128' => true,
-                '192.168.1.255' => true,
-                '192.168.2.0'   => false,
-            )),
-
-            array('192.168.1.10/24', array(
-                '192.168.0.255' => false,
-                '192.168.1.0'   => true,
-                '192.168.1.1'   => true,
-                '192.168.1.2'   => true,
-                '192.168.1.3'   => true,
-                '192.168.1.4'   => true,
-                '192.168.1.7'   => true,
-                '192.168.1.8'   => true,
-                '192.168.1.15'  => true,
-                '192.168.1.16'  => true,
-                '192.168.1.31'  => true,
-                '192.168.1.32'  => true,
-                '192.168.1.63'  => true,
-                '192.168.1.64'  => true,
-                '192.168.1.127' => true,
-                '192.168.1.128' => true,
-                '192.168.1.255' => true,
-                '192.168.2.0'   => false,
-            )),
-
-            array('192.168.1.*', array(
-                '192.168.0.255' => false,
-                '192.168.1.0'   => true,
-                '192.168.1.1'   => true,
-                '192.168.1.2'   => true,
-                '192.168.1.3'   => true,
-                '192.168.1.4'   => true,
-                '192.168.1.7'   => true,
-                '192.168.1.8'   => true,
-                '192.168.1.15'  => true,
-                '192.168.1.16'  => true,
-                '192.168.1.31'  => true,
-                '192.168.1.32'  => true,
-                '192.168.1.63'  => true,
-                '192.168.1.64'  => true,
-                '192.168.1.127' => true,
-                '192.168.1.128' => true,
-                '192.168.1.255' => true,
-                '192.168.2.0'   => false,
-            )),
-        );
-    }
-
-    /**
-     * @group Core
-     *
-     * @dataProvider getIpsInRangeData
-     */
-    public function testIsIpInRange($range, $test)
-    {
-        foreach ($test as $ip => $expected) {
-            // range as a string
-            $this->assertEquals($expected, IPUtils::isIpInRange(IPUtils::P2N($ip), array($range)), "$ip in $range");
-
-            // range as an array(low, high)
-            $aRange = IPUtils::getIpsForRange($range);
-            $aRange[0] = IPUtils::N2P($aRange[0]);
-            $aRange[1] = IPUtils::N2P($aRange[1]);
-            $this->assertEquals($expected, IPUtils::isIpInRange(IPUtils::P2N($ip), array($aRange)), "$ip in $range");
-        }
+        $this->assertSame($expected, IPUtils::getIPRangeBounds($range));
     }
 
     /**

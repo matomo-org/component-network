@@ -9,6 +9,7 @@
 namespace Tests\Piwik\IP;
 
 use Piwik\IP\IP;
+use Piwik\IP\IPUtils;
 
 /**
  * @covers \Piwik\IP\IP
@@ -163,5 +164,130 @@ class IPTest extends \PHPUnit_Framework_TestCase
     {
         $ip = IP::fromStringIP('0.1.2.3');
         $this->assertSame(null, $ip->getHostname());
+    }
+
+    public function getIpsInRangeData()
+    {
+        return array(
+            array('192.168.1.10', array(
+                '192.168.1.9'         => false,
+                '192.168.1.10'        => true,
+                '192.168.1.11'        => false,
+
+                // IPv6 addresses (including IPv4 mapped) have to be compared against IPv6 address ranges
+                '::ffff:192.168.1.10' => false,
+            )),
+
+            array('::ffff:192.168.1.10', array(
+                '::ffff:192.168.1.9'                      => false,
+                '::ffff:192.168.1.10'                     => true,
+                '::ffff:c0a8:010a'                        => true,
+                '0000:0000:0000:0000:0000:ffff:c0a8:010a' => true,
+                '::ffff:192.168.1.11'                     => false,
+
+                // conversely, IPv4 addresses have to be compared against IPv4 address ranges
+                '192.168.1.10'                            => false,
+            )),
+
+            array('192.168.1.10/32', array(
+                '192.168.1.9'  => false,
+                '192.168.1.10' => true,
+                '192.168.1.11' => false,
+            )),
+
+            array('192.168.1.10/31', array(
+                '192.168.1.9'  => false,
+                '192.168.1.10' => true,
+                '192.168.1.11' => true,
+                '192.168.1.12' => false,
+            )),
+
+            array('192.168.1.128/25', array(
+                '192.168.1.127' => false,
+                '192.168.1.128' => true,
+                '192.168.1.255' => true,
+                '192.168.2.0'   => false,
+            )),
+
+            array('192.168.1.10/24', array(
+                '192.168.0.255' => false,
+                '192.168.1.0'   => true,
+                '192.168.1.1'   => true,
+                '192.168.1.2'   => true,
+                '192.168.1.3'   => true,
+                '192.168.1.4'   => true,
+                '192.168.1.7'   => true,
+                '192.168.1.8'   => true,
+                '192.168.1.15'  => true,
+                '192.168.1.16'  => true,
+                '192.168.1.31'  => true,
+                '192.168.1.32'  => true,
+                '192.168.1.63'  => true,
+                '192.168.1.64'  => true,
+                '192.168.1.127' => true,
+                '192.168.1.128' => true,
+                '192.168.1.255' => true,
+                '192.168.2.0'   => false,
+            )),
+
+            array('192.168.1.*', array(
+                '192.168.0.255' => false,
+                '192.168.1.0'   => true,
+                '192.168.1.1'   => true,
+                '192.168.1.2'   => true,
+                '192.168.1.3'   => true,
+                '192.168.1.4'   => true,
+                '192.168.1.7'   => true,
+                '192.168.1.8'   => true,
+                '192.168.1.15'  => true,
+                '192.168.1.16'  => true,
+                '192.168.1.31'  => true,
+                '192.168.1.32'  => true,
+                '192.168.1.63'  => true,
+                '192.168.1.64'  => true,
+                '192.168.1.127' => true,
+                '192.168.1.128' => true,
+                '192.168.1.255' => true,
+                '192.168.2.0'   => false,
+            )),
+        );
+    }
+
+    /**
+     * @dataProvider getIpsInRangeData
+     */
+    public function testIsInRange($range, $test)
+    {
+        foreach ($test as $stringIp => $expected) {
+            $ip = IP::fromStringIP($stringIp);
+
+            // range as a string
+            $this->assertEquals($expected, $ip->isInRange($range), "$ip in $range");
+
+            // range as an array(low, high)
+            $arrayRange = IPUtils::getIPRangeBounds($range);
+            $arrayRange[0] = IPUtils::N2P($arrayRange[0]);
+            $arrayRange[1] = IPUtils::N2P($arrayRange[1]);
+            $this->assertEquals($expected, $ip->isInRange($arrayRange), "$ip in $range");
+        }
+    }
+
+    /**
+     * @dataProvider getIpsInRangeData
+     */
+    public function testIsInRanges($range, $test)
+    {
+        foreach ($test as $stringIp => $expected) {
+            $ip = IP::fromStringIP($stringIp);
+
+            // range as a string
+            $this->assertEquals($expected, $ip->isInRanges(array($range)), "$ip in $range");
+
+            // range as an array(low, high)
+            $arrayRange = IPUtils::getIPRangeBounds($range);
+            $arrayRange[0] = IPUtils::N2P($arrayRange[0]);
+            $arrayRange[1] = IPUtils::N2P($arrayRange[1]);
+            $this->assertEquals($expected, $ip->isInRanges(array($arrayRange)), "$ip in $range");
+        }
     }
 }

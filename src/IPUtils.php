@@ -16,8 +16,6 @@ namespace Piwik\IP;
  */
 class IPUtils
 {
-    const MAPPED_IPv4_START = '::ffff:';
-
     /**
      * Removes the port and the last portion of a CIDR IP address.
      *
@@ -139,12 +137,12 @@ class IPUtils
     }
 
     /**
-     * Get low and high IP addresses for a specified range.
+     * Get low and high IP addresses for a specified IP range.
      *
      * @param array $ipRange An IP address range in presentation format.
-     * @return array|bool  Array `array($lowIp, $highIp)` in network address format, or false on failure.
+     * @return array|null  Array `array($lowIp, $highIp)` in network address format, or null on failure.
      */
-    public static function getIpsForRange($ipRange)
+    public static function getIPRangeBounds($ipRange)
     {
         if (strpos($ipRange, '/') === false) {
             $ipRange = self::sanitizeIpRange($ipRange);
@@ -155,7 +153,7 @@ class IPUtils
         $range = substr($ipRange, 0, $pos);
         $high = $low = @inet_pton($range);
         if ($low === false) {
-            return false;
+            return null;
         }
 
         $lowLen = strlen($low);
@@ -177,50 +175,6 @@ class IPUtils
     }
 
     /**
-     * Determines if an IP address is in a specified IP address range.
-     *
-     * An IPv4-mapped address should be range checked with an IPv4-mapped address range.
-     *
-     * @param string $ip IP address in network address format
-     * @param array $ipRanges List of IP address ranges
-     * @return bool  True if in any of the specified IP address ranges; else false.
-     */
-    public static function isIpInRange($ip, $ipRanges)
-    {
-        $ipLen = strlen($ip);
-        if (empty($ip) || empty($ipRanges) || ($ipLen != 4 && $ipLen != 16)) {
-            return false;
-        }
-
-        foreach ($ipRanges as $range) {
-            if (is_array($range)) {
-                // already split into low/high IP addresses
-                $range[0] = self::P2N($range[0]);
-                $range[1] = self::P2N($range[1]);
-            } else {
-                // expect CIDR format but handle some variations
-                $range = self::getIpsForRange($range);
-            }
-            if ($range === false) {
-                continue;
-            }
-
-            $low = $range[0];
-            $high = $range[1];
-            if (strlen($low) != $ipLen) {
-                continue;
-            }
-
-            // binary-safe string comparison
-            if ($ip >= $low && $ip <= $high) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Returns the last IP address in a comma separated list, subject to an optional exclusion list.
      *
      * @param string $csv Comma separated list of elements.
@@ -233,9 +187,10 @@ class IPUtils
         if ($p !== false) {
             $elements = explode(',', $csv);
             for ($i = count($elements); $i--;) {
-                $element = trim($elements[$i]);
-                if (empty($excludedIps) || (!in_array($element, $excludedIps) && !self::isIpInRange(self::P2N(self::sanitizeIp($element)), $excludedIps))) {
-                    return $element;
+                $stringIp = trim($elements[$i]);
+                $ip = IP::fromStringIP(self::sanitizeIp($stringIp));
+                if (empty($excludedIps) || (!in_array($stringIp, $excludedIps) && !$ip->isInRanges($excludedIps))) {
+                    return $stringIp;
                 }
             }
         }

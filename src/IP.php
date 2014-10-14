@@ -170,4 +170,71 @@ class IP
 
         return $host;
     }
+
+    /**
+     * Determines if the IP address is in a specified IP address range.
+     *
+     * An IPv4-mapped address should be range checked with an IPv4-mapped address range.
+     *
+     * @param array|string $ipRange IP address range (string or array containing min and max IP addresses)
+     *
+     * @return bool
+     */
+    public function isInRange($ipRange)
+    {
+        $ipLen = strlen($this->ip);
+        if (empty($this->ip) || empty($ipRange) || ($ipLen != 4 && $ipLen != 16)) {
+            return false;
+        }
+
+        if (is_array($ipRange)) {
+            // already split into low/high IP addresses
+            $ipRange[0] = IPUtils::P2N($ipRange[0]);
+            $ipRange[1] = IPUtils::P2N($ipRange[1]);
+        } else {
+            // expect CIDR format but handle some variations
+            $ipRange = IPUtils::getIPRangeBounds($ipRange);
+        }
+        if ($ipRange === false) {
+            return false;
+        }
+
+        $low = $ipRange[0];
+        $high = $ipRange[1];
+        if (strlen($low) != $ipLen) {
+            return false;
+        }
+
+        // binary-safe string comparison
+        if ($this->ip >= $low && $this->ip <= $high) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines if the IP address is in a specified IP address range.
+     *
+     * An IPv4-mapped address should be range checked with IPv4-mapped address ranges.
+     *
+     * @param array $ipRanges List of IP address ranges (strings or arrays containing min and max IP addresses).
+     *
+     * @return bool True if in any of the specified IP address ranges; false otherwise.
+     */
+    public function isInRanges(array $ipRanges)
+    {
+        $ipLen = strlen($this->ip);
+        if (empty($this->ip) || empty($ipRanges) || ($ipLen != 4 && $ipLen != 16)) {
+            return false;
+        }
+
+        foreach ($ipRanges as $ipRange) {
+            if ($this->isInRange($ipRange)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
