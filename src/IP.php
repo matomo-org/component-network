@@ -4,18 +4,12 @@
  *
  * @link http://piwik.org
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
- *
  */
 
-namespace Piwik;
+namespace Piwik\IP;
 
 /**
- * Contains IP address helper functions (for both IPv4 and IPv6).
- *
- * As of Piwik 1.3, IP addresses are stored in the DB has VARBINARY(16),
- * and passed around in network address format which has the advantage of
- * being in big-endian byte order. This allows for binary-safe string
- * comparison of addresses (of the same length), even on Intel x86.
+ * IP address helper (for both IPv4 and IPv6).
  *
  * As a matter of naming convention, we use `$ip` for the network address format
  * and `$ipString` for the presentation format (i.e., human-readable form).
@@ -23,8 +17,6 @@ namespace Piwik;
  * We're not using the network address format (in_addr) for socket functions,
  * so we don't have to worry about incompatibility with Windows UNICODE
  * and inetPtonW().
- *
- * @api
  */
 class IP
 {
