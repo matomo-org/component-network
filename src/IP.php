@@ -127,7 +127,7 @@ class IP
      */
     public function isMappedIPv4()
     {
-        return substr($this->ip, 0, strlen(self::MAPPED_IPv4_START)) === self::MAPPED_IPv4_START;
+        return substr($this->toString(), 0, strlen(self::MAPPED_IPv4_START)) === self::MAPPED_IPv4_START;
     }
 
     /**

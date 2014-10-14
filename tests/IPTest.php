@@ -100,7 +100,6 @@ class IPTest extends \PHPUnit_Framework_TestCase
             array('999', false),
             array("\x39\x39\x39", false),
         );
-
     }
 
     /**
@@ -111,6 +110,26 @@ class IPTest extends \PHPUnit_Framework_TestCase
         $ip = IP::fromBinaryIP($ip);
 
         $this->assertEquals($expected, $ip->isIPv4(), $ip->toString());
+    }
+
+    public function getMappedIPv4Data()
+    {
+        return array(
+            array(null, false),
+            array('', false),
+            array('192.168.0.1', false),
+            array('::ffff:192.0.0.1', true, '192.0.0.1'),
+        );
+    }
+
+    /**
+     * @dataProvider getMappedIPv4Data
+     */
+    public function testIsMappedIPv4($stringIp, $expected)
+    {
+        $ip = IP::fromStringIP($stringIp);
+
+        $this->assertEquals($expected, $ip->isMappedIPv4(), $stringIp);
     }
 
     public function testGetHostnameIPv4()
