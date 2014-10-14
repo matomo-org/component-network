@@ -173,27 +173,4 @@ class IPUtils
 
         return array($low, $high);
     }
-
-    /**
-     * Returns the last IP address in a comma separated list, subject to an optional exclusion list.
-     *
-     * @param string $csv Comma separated list of elements.
-     * @param array $excludedIps Optional list of excluded IP addresses (or IP address ranges).
-     * @return string Last (non-excluded) IP address in the list.
-     */
-    public static function getLastIpFromList($csv, $excludedIps = null)
-    {
-        $p = strrpos($csv, ',');
-        if ($p !== false) {
-            $elements = explode(',', $csv);
-            for ($i = count($elements); $i--;) {
-                $stringIp = trim($elements[$i]);
-                $ip = IP::fromStringIP(self::sanitizeIp($stringIp));
-                if (empty($excludedIps) || (!in_array($stringIp, $excludedIps) && !$ip->isInRanges($excludedIps))) {
-                    return $stringIp;
-                }
-            }
-        }
-        return trim($csv);
-    }
 }

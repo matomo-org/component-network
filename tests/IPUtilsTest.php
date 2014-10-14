@@ -304,33 +304,4 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($expected, IPUtils::getIPRangeBounds($range));
     }
-
-    /**
-     * Dataprovider for testGetLastIpFromList
-     */
-    public function getLastIpFromListTestData()
-    {
-        return array(
-            array('', ''),
-            array('127.0.0.1', '127.0.0.1'),
-            array(' 127.0.0.1 ', '127.0.0.1'),
-            array(' 192.168.1.1, 127.0.0.1', '127.0.0.1'),
-            array('192.168.1.1 ,127.0.0.1 ', '127.0.0.1'),
-            array('192.168.1.1,', ''),
-        );
-    }
-
-    /**
-     * @group Core
-     *
-     * @dataProvider getLastIpFromListTestData
-     */
-    public function testGetLastIpFromList($csv, $expected)
-    {
-        // without excluded IPs
-        $this->assertEquals($expected, IPUtils::getLastIpFromList($csv));
-
-        // with excluded Ips
-        $this->assertEquals($expected, IPUtils::getLastIpFromList($csv . ', 10.10.10.10', array('10.10.10.10')));
-    }
 }
