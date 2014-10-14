@@ -279,12 +279,12 @@ class IPUtils
         if ($p !== false) {
             $elements = explode(',', $csv);
             for ($i = count($elements); $i--;) {
-                $element = trim(Common::sanitizeInputValue($elements[$i]));
+                $element = trim($elements[$i]);
                 if (empty($excludedIps) || (!in_array($element, $excludedIps) && !self::isIpInRange(self::P2N(self::sanitizeIp($element)), $excludedIps))) {
                     return $element;
                 }
             }
         }
-        return trim(Common::sanitizeInputValue($csv));
+        return trim($csv);
     }
 }

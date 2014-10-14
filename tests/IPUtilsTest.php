@@ -496,7 +496,6 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLastIpFromList($csv, $expected)
     {
-        $this->markTestSkipped('Using Config class');
         // without excluded IPs
         $this->assertEquals($expected, IPUtils::getLastIpFromList($csv));
 
