@@ -18,7 +18,7 @@ namespace Piwik\IP;
  * so we don't have to worry about incompatibility with Windows UNICODE
  * and inetPtonW().
  */
-class IP
+class IPUtils
 {
     const MAPPED_IPv4_START = '::ffff:';
 
