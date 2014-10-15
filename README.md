@@ -1,10 +1,10 @@
-# Piwik/IP
+# Piwik/Network
 
-Component providing tools to work with IP addresses.
+Component providing Network tools.
 
-[![Build Status](https://travis-ci.org/piwik/component-decompress.svg?branch=master)](https://travis-ci.org/piwik/component-decompress)
-[![Coverage Status](https://coveralls.io/repos/piwik/component-decompress/badge.png?branch=master)](https://coveralls.io/r/piwik/component-decompress?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/piwik/component-decompress/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/piwik/component-decompress/?branch=master)
+[![Build Status](https://travis-ci.org/piwik/component-network.svg?branch=master)](https://travis-ci.org/piwik/component-network)
+[![Coverage Status](https://coveralls.io/repos/piwik/component-network/badge.png?branch=master)](https://coveralls.io/r/piwik/component-network?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/piwik/component-network/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/piwik/component-network/?branch=master)
 
 ## Installation
 
@@ -13,14 +13,16 @@ With Composer:
 ```json
 {
     "require": {
-        "piwik/ip": "*"
+        "piwik/network": "*"
     }
 }
 ```
 
 ## Usage
 
-Creating an `IP` object:
+### IP
+
+To manipulate an IP address, you can use the `Piwik\Network\IP` class:
 
 ```php
 $ip = IP::fromStringIP('127.0.0.1');
@@ -43,7 +45,7 @@ if ($ip->isInRange('192.168.1.1/32')) {}
 if ($ip->isInRange('192.168.*.*')) {}
 ```
 
-The `IPUtils` provide utility methods:
+The `Piwik\Network\IPUtils` class provides utility methods:
 
 ```php
 echo IPUtils::binaryToStringIP("\x7F\x00\x00\x01");
@@ -61,4 +63,4 @@ echo $bounds[1]; // 192.168.1.255
 
 ## License
 
-The IP component is released under the [LGPL v3.0](http://choosealicense.com/licenses/lgpl-3.0/).
+The Network component is released under the [LGPL v3.0](http://choosealicense.com/licenses/lgpl-3.0/).

@@ -6,7 +6,7 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-namespace Piwik\IP;
+namespace Piwik\Network;
 
 /**
  * IP address utilities (for both IPv4 and IPv6).

@@ -6,9 +6,9 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-namespace Tests\Piwik\IP;
+namespace Tests\Piwik\Network;
 
-use Piwik\IP\IPUtils;
+use Piwik\Network\IPUtils;
 
 class IPUtilsTest extends \PHPUnit_Framework_TestCase
 {
