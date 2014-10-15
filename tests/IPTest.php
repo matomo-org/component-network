@@ -266,8 +266,8 @@ class IPTest extends \PHPUnit_Framework_TestCase
 
             // range as an array(low, high)
             $arrayRange = IPUtils::getIPRangeBounds($range);
-            $arrayRange[0] = IPUtils::N2P($arrayRange[0]);
-            $arrayRange[1] = IPUtils::N2P($arrayRange[1]);
+            $arrayRange[0] = IPUtils::binaryToStringIP($arrayRange[0]);
+            $arrayRange[1] = IPUtils::binaryToStringIP($arrayRange[1]);
             $this->assertEquals($expected, $ip->isInRange($arrayRange), "$ip in $range");
         }
     }
@@ -285,8 +285,8 @@ class IPTest extends \PHPUnit_Framework_TestCase
 
             // range as an array(low, high)
             $arrayRange = IPUtils::getIPRangeBounds($range);
-            $arrayRange[0] = IPUtils::N2P($arrayRange[0]);
-            $arrayRange[1] = IPUtils::N2P($arrayRange[1]);
+            $arrayRange[0] = IPUtils::binaryToStringIP($arrayRange[0]);
+            $arrayRange[1] = IPUtils::binaryToStringIP($arrayRange[1]);
             $this->assertEquals($expected, $ip->isInRanges(array($arrayRange)), "$ip in $range");
         }
     }

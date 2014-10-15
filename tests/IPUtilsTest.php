@@ -12,10 +12,7 @@ use Piwik\IP\IPUtils;
 
 class IPUtilsTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Dataprovider for testSanitizeIp
-     */
-    public function getIPData()
+    public function getIPSanitizationData()
     {
         return array( // input, output
             // single IPv4 address
@@ -58,18 +55,14 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getIPData
-     * @group Core
+     * @dataProvider getIPSanitizationData
      */
     public function testSanitizeIp($ip, $expected)
     {
         $this->assertEquals($expected, IPUtils::sanitizeIp($ip));
     }
 
-    /**
-     * Dataprovider for testSanitizeIpRange
-     */
-    public function getIPRangeData()
+    public function getIPRangeSanitizationData()
     {
         return array(
             array('', false),
@@ -98,18 +91,14 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getIPRangeData
-     * @group Core
+     * @dataProvider getIPRangeSanitizationData
      */
     public function testSanitizeIpRange($ip, $expected)
     {
         $this->assertEquals($expected, IPUtils::sanitizeIpRange($ip));
     }
 
-    /**
-     * Dataprovider for testP2N
-     */
-    public function getP2NTestData()
+    public function getIPData()
     {
         return array(
             // IPv4
@@ -128,18 +117,14 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getP2NTestData
-     * @group Core
+     * @dataProvider getIPData
      */
-    public function testP2N($P, $N)
+    public function testStringToBinaryIP($string, $binary)
     {
-        $this->assertEquals($N, IPUtils::P2N($P));
+        $this->assertEquals($binary, IPUtils::stringToBinaryIP($string));
     }
 
-    /**
-     * Dataprovider for testP2NInvalidInput
-     */
-    public function getP2NInvalidInputData()
+    public function getInvalidIPData()
     {
         return array(
             // not a series of dotted numbers
@@ -164,19 +149,14 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group Core
-     *
-     * @dataProvider getP2NInvalidInputData
+     * @dataProvider getInvalidIPData
      */
-    public function testP2NInvalidInput($P)
+    public function testStringToBinaryInvalidIP($stringIp)
     {
-        $this->assertEquals("\x00\x00\x00\x00", IPUtils::P2N($P));
+        $this->assertEquals("\x00\x00\x00\x00", IPUtils::stringToBinaryIP($stringIp));
     }
 
-    /**
-     * @group Core
-     */
-    public function getN2PTestData()
+    public function getBinaryIPData()
     {
         // a valid network address is either 4 or 16 bytes; those lines are intentionally left blank ;)
         return array(
@@ -203,21 +183,19 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getP2NTestData
-     * @group Core
+     * @dataProvider getIPData
      */
-    public function testN2P($P, $N)
+    public function testBinaryToStringIP($string, $binary)
     {
-        $this->assertEquals($P, IPUtils::N2P($N), "$P vs" . IPUtils::N2P($N));
+        $this->assertEquals($string, IPUtils::binaryToStringIP($binary));
     }
 
     /**
-     * @dataProvider getN2PTestData
-     * @group Core
+     * @dataProvider getBinaryIPData
      */
-    public function testN2PinvalidInput($N)
+    public function testBinaryToStringInvalidIP($binary)
     {
-        $this->assertEquals('0.0.0.0', IPUtils::N2P($N), bin2hex($N));
+        $this->assertEquals('0.0.0.0', IPUtils::binaryToStringIP($binary), bin2hex($binary));
     }
 
     public function getBoundsForIPRangeTest()

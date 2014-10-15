@@ -114,7 +114,7 @@ class IPUtils
      * @param string $ipString IP address, either IPv4 or IPv6, e.g. `'127.0.0.1'`.
      * @return string Binary-safe string, e.g. `"\x7F\x00\x00\x01"`.
      */
-    public static function P2N($ipString)
+    public static function stringToBinaryIP($ipString)
     {
         // use @inet_pton() because it throws an exception and E_WARNING on invalid input
         $ip = @inet_pton($ipString);
@@ -127,7 +127,7 @@ class IPUtils
      * @param string $ip IP address in binary/network address format, e.g. `"\x7F\x00\x00\x01"`.
      * @return string IP address in string format, e.g. `'127.0.0.1'`.
      */
-    public static function N2P($ip)
+    public static function binaryToStringIP($ip)
     {
         // use @inet_ntop() because it throws an exception and E_WARNING on invalid input
         $ipStr = @inet_ntop($ip);

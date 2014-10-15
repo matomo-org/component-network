@@ -52,7 +52,7 @@ class IP
      */
     public static function fromStringIP($ip)
     {
-        return new static(IPUtils::P2N($ip));
+        return new static(IPUtils::stringToBinaryIP($ip));
     }
 
     /**
@@ -72,7 +72,7 @@ class IP
      */
     public function toString()
     {
-        return IPUtils::N2P($this->ip);
+        return IPUtils::binaryToStringIP($this->ip);
     }
 
     /**
@@ -188,8 +188,8 @@ class IP
 
         if (is_array($ipRange)) {
             // already split into low/high IP addresses
-            $ipRange[0] = IPUtils::P2N($ipRange[0]);
-            $ipRange[1] = IPUtils::P2N($ipRange[1]);
+            $ipRange[0] = IPUtils::stringToBinaryIP($ipRange[0]);
+            $ipRange[1] = IPUtils::stringToBinaryIP($ipRange[1]);
         } else {
             // expect CIDR format but handle some variations
             $ipRange = IPUtils::getIPRangeBounds($ipRange);
