@@ -43,6 +43,9 @@ echo $ip->getHostname();
 
 if ($ip->isInRange('192.168.1.1/32')) {}
 if ($ip->isInRange('192.168.*.*')) {}
+
+// Anonymize an IP by setting X bytes to null bytes
+$ip->anonymize(2);
 ```
 
 The `Piwik\Network\IPUtils` class provides utility methods:

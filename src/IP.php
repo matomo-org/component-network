@@ -10,6 +10,9 @@ namespace Piwik\Network;
 
 /**
  * IP address.
+ *
+ * This class is immutable, i.e. once created it can't be changed. Methods that modify it
+ * will always return a new instance.
  */
 class IP
 {
@@ -234,5 +237,41 @@ class IP
         }
 
         return false;
+    }
+
+    /**
+     * Anonymize X bytes of the IP address by setting them to a null byte.
+     *
+     * This method returns a new IP instance, it does not modify the current object.
+     *
+     * @param int $byteCount Number of bytes to set to "\0".
+     *
+     * @return IP Returns a new modified instance.
+     */
+    public function anonymize($byteCount)
+    {
+        $newBinaryIp = $this->ip;
+
+        // IPv4 or mapped IPv4 in IPv6
+        if ($this->isIPv4()) {
+            $i = strlen($newBinaryIp);
+            if ($byteCount > $i) {
+                $byteCount = $i;
+            }
+
+            while ($byteCount-- > 0) {
+                $newBinaryIp[--$i] = chr(0);
+            }
+        } else {
+            $masks = array(
+                'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+                'ffff:ffff:ffff:ffff::',
+                'ffff:ffff:ffff:0000::',
+                'ffff:ff00:0000:0000::'
+            );
+            $newBinaryIp = $newBinaryIp & pack('a16', inet_pton($masks[$byteCount]));
+        }
+
+        return self::fromBinaryIP($newBinaryIp);
     }
 }
