@@ -10,6 +10,9 @@ namespace Tests\Piwik\Network;
 
 use Piwik\Network\IPUtils;
 
+/**
+ * @covers Piwik\Network\IPUtils
+ */
 class IPUtilsTest extends \PHPUnit_Framework_TestCase
 {
     public function getIPSanitizationData()

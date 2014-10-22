@@ -35,8 +35,8 @@ echo $ip->toString(); // 127.0.0.1
 echo $ip->toBinary();
 
 // IPv4 & IPv6
-if ($ip->isIPv4()) {}
-if ($ip->isIPv6()) {}
+if ($ip instanceof IPv4) {}
+if ($ip instanceof IPv6) {}
 
 // Hostname reverse lookup
 echo $ip->getHostname();

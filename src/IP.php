@@ -14,16 +14,14 @@ namespace Piwik\Network;
  * This class is immutable, i.e. once created it can't be changed. Methods that modify it
  * will always return a new instance.
  */
-class IP
+abstract class IP
 {
-    const MAPPED_IPv4_START = '::ffff:';
-
     /**
      * Binary representation of the IP.
      *
      * @var string
      */
-    private $ip;
+    protected $ip;
 
     /**
      * @see fromBinaryIP
@@ -31,12 +29,14 @@ class IP
      *
      * @param string $ip Binary representation of the IP.
      */
-    private function __construct($ip)
+    protected function __construct($ip)
     {
         $this->ip = $ip;
     }
 
     /**
+     * Factory method to create an IP instance from an IP in binary format.
+     *
      * @see fromStringIP
      *
      * @param string $ip IP address in a binary format.
@@ -44,10 +44,20 @@ class IP
      */
     public static function fromBinaryIP($ip)
     {
-        return new static($ip);
+        if ($ip === null || $ip === '') {
+            return new IPv4("\x00\x00\x00\x00");
+        }
+
+        if (self::isIPv4($ip)) {
+            return new IPv4($ip);
+        }
+
+        return new IPv6($ip);
     }
 
     /**
+     * Factory method to create an IP instance from an IP represented as string.
+     *
      * @see fromBinaryIP
      *
      * @param string $ip IP address in a string format (X.X.X.X).
@@ -55,7 +65,7 @@ class IP
      */
     public static function fromStringIP($ip)
     {
-        return new static(IPUtils::stringToBinaryIP($ip));
+        return self::fromBinaryIP(IPUtils::stringToBinaryIP($ip));
     }
 
     /**
@@ -79,81 +89,11 @@ class IP
     }
 
     /**
-     * Returns the IP address as an IPv4 string when possible.
-     *
-     * Some IPv6 can be transformed to IPv4 addresses, for example
-     * IPv4-mapped IPv6 addresses: `::ffff:192.168.0.1` will return `192.168.0.1`.
-     *
-     * @return string|null IPv4 string address e.g. `'192.0.2.128'` or null if this is not an IPv4 address.
-     */
-    public function toIPv4String()
-    {
-        $str = $this->toString();
-
-        if ($this->isMappedIPv4()) {
-            return substr($str, strlen(self::MAPPED_IPv4_START));
-        }
-
-        if (! $this->isIPv4()) {
-            return null;
-        }
-
-        return $str;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
     {
         return $this->toString();
-    }
-
-    /**
-     * Returns true if this is an IPv4, IPv4-compat, or IPv4-mapped address, false otherwise.
-     *
-     * @return bool
-     */
-    public function isIPv4()
-    {
-        // in case mbstring overloads strlen function
-        $strlen = function_exists('mb_orig_strlen') ? 'mb_orig_strlen' : 'strlen';
-
-        // IPv4
-        if ($strlen($this->ip) == 4) {
-            return true;
-        }
-
-        // IPv6 - transitional address?
-        if ($strlen($this->ip) == 16) {
-            if (substr_compare($this->ip, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff", 0, 12) === 0
-                || substr_compare($this->ip, "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00", 0, 12) === 0
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns true if this is an IPv6 address, false otherwise.
-     *
-     * @return bool
-     */
-    public function isIPv6()
-    {
-        return filter_var($this->ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
-    }
-
-    /**
-     * Returns true if this is a IPv4 mapped address, false otherwise.
-     *
-     * @return bool
-     */
-    public function isMappedIPv4()
-    {
-        return substr($this->toString(), 0, strlen(self::MAPPED_IPv4_START)) === self::MAPPED_IPv4_START;
     }
 
     /**
@@ -240,6 +180,16 @@ class IP
     }
 
     /**
+     * Returns the IP address as an IPv4 string when possible.
+     *
+     * Some IPv6 can be transformed to IPv4 addresses, for example
+     * IPv4-mapped IPv6 addresses: `::ffff:192.168.0.1` will return `192.168.0.1`.
+     *
+     * @return string|null IPv4 string address e.g. `'192.0.2.128'` or null if this is not an IPv4 address.
+     */
+    public abstract function toIPv4String();
+
+    /**
      * Anonymize X bytes of the IP address by setting them to a null byte.
      *
      * This method returns a new IP instance, it does not modify the current object.
@@ -248,30 +198,19 @@ class IP
      *
      * @return IP Returns a new modified instance.
      */
-    public function anonymize($byteCount)
+    public abstract function anonymize($byteCount);
+
+    /**
+     * Returns true if this is an IPv4, IPv4-compat, or IPv4-mapped address, false otherwise.
+     *
+     * @param string $binaryIp
+     * @return bool
+     */
+    private static function isIPv4($binaryIp)
     {
-        $newBinaryIp = $this->ip;
+        // in case mbstring overloads strlen function
+        $strlen = function_exists('mb_orig_strlen') ? 'mb_orig_strlen' : 'strlen';
 
-        // IPv4 or mapped IPv4 in IPv6
-        if ($this->isIPv4()) {
-            $i = strlen($newBinaryIp);
-            if ($byteCount > $i) {
-                $byteCount = $i;
-            }
-
-            while ($byteCount-- > 0) {
-                $newBinaryIp[--$i] = chr(0);
-            }
-        } else {
-            $masks = array(
-                'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
-                'ffff:ffff:ffff:ffff::',
-                'ffff:ffff:ffff:0000::',
-                'ffff:ff00:0000:0000::'
-            );
-            $newBinaryIp = $newBinaryIp & pack('a16', inet_pton($masks[$byteCount]));
-        }
-
-        return self::fromBinaryIP($newBinaryIp);
+        return $strlen($binaryIp) == 4;
     }
 }
