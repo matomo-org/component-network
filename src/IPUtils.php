@@ -137,7 +137,7 @@ class IPUtils
     /**
      * Get low and high IP addresses for a specified IP range.
      *
-     * @param array $ipRange An IP address range in string format, e.g. `'192.168.1.1/24'`.
+     * @param string $ipRange An IP address range in string format, e.g. `'192.168.1.1/24'`.
      * @return array|null Array `array($lowIp, $highIp)` in binary format, or null on failure.
      */
     public static function getIPRangeBounds($ipRange)
