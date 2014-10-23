@@ -68,19 +68,19 @@ class IPUtils
      * - wildcards, e.g., 192.168.0.*
      *
      * @param string $ipRangeString IP address range
-     * @return string|bool  IP address range in CIDR notation OR false
+     * @return string|null  IP address range in CIDR notation OR null on failure
      */
     public static function sanitizeIpRange($ipRangeString)
     {
         $ipRangeString = trim($ipRangeString);
         if (empty($ipRangeString)) {
-            return false;
+            return null;
         }
 
         // IPv4 address with wildcards '*'
         if (strpos($ipRangeString, '*') !== false) {
             if (preg_match('~(^|\.)\*\.\d+(\.|$)~D', $ipRangeString)) {
-                return false;
+                return null;
             }
 
             $bits = 32 - 8 * substr_count($ipRangeString, '*');
@@ -95,14 +95,14 @@ class IPUtils
 
         // single IP
         if (($ip = @inet_pton($ipRangeString)) === false)
-            return false;
+            return null;
 
         $maxbits = strlen($ip) * 8;
         if (!isset($bits))
             $bits = $maxbits;
 
         if ($bits < 0 || $bits > $maxbits) {
-            return false;
+            return null;
         }
 
         return "$ipRangeString/$bits";
@@ -144,6 +144,10 @@ class IPUtils
     {
         if (strpos($ipRange, '/') === false) {
             $ipRange = self::sanitizeIpRange($ipRange);
+
+            if ($ipRange === null) {
+                return null;
+            }
         }
         $pos = strpos($ipRange, '/');
 

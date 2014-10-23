@@ -188,6 +188,13 @@ class IPTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testIsInRangeWithInvalidRange()
+    {
+        $ip = IP::fromStringIP('127.0.0.1');
+
+        $this->assertFalse($ip->isInRange('foo-bar'));
+    }
+
     /**
      * @dataProvider getIpsInRangeData
      */

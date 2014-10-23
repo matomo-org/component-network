@@ -68,7 +68,7 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
     public function getIPRangeSanitizationData()
     {
         return array(
-            array('', false),
+            array('', null),
             array(' 127.0.0.1 ', '127.0.0.1/32'),
             array('192.168.1.0', '192.168.1.0/32'),
             array('192.168.1.1/24', '192.168.1.1/24'),
@@ -78,12 +78,12 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array('192.169.*.*', '192.169.0.0/16'),
             array('193.*.*.*', '193.0.0.0/8'),
             array('*.*.*.*', '0.0.0.0/0'),
-            array('*.*.*.1', false),
-            array('*.*.1.1', false),
-            array('*.1.1.1', false),
-            array('1.*.1.1', false),
-            array('1.1.*.1', false),
-            array('1.*.*.1', false),
+            array('*.*.*.1', null),
+            array('*.*.1.1', null),
+            array('*.1.1.1', null),
+            array('1.*.1.1', null),
+            array('1.1.*.1', null),
+            array('1.*.*.1', null),
             array('::1', '::1/128'),
             array('::ffff:127.0.0.1', '::ffff:127.0.0.1/128'),
             array('2001:5c0:1000:b::90f8', '2001:5c0:1000:b::90f8/128'),
@@ -98,7 +98,7 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
      */
     public function testSanitizeIpRange($ip, $expected)
     {
-        $this->assertEquals($expected, IPUtils::sanitizeIpRange($ip));
+        $this->assertSame($expected, IPUtils::sanitizeIpRange($ip));
     }
 
     public function getIPData()

@@ -137,7 +137,7 @@ abstract class IP
             // expect CIDR format but handle some variations
             $ipRange = IPUtils::getIPRangeBounds($ipRange);
         }
-        if ($ipRange === false) {
+        if ($ipRange === null) {
             return false;
         }
 
