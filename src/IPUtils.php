@@ -92,6 +92,10 @@ class IPUtils
         } elseif (($pos = strpos($ipRangeString, '/')) !== false) {
             $bits = substr($ipRangeString, $pos + 1);
             $ipRangeString = substr($ipRangeString, 0, $pos);
+
+            if (!is_numeric($bits)) {
+                return null;
+            }
         }
 
         // single IP
