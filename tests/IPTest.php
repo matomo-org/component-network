@@ -72,8 +72,23 @@ class IPTest extends \PHPUnit_Framework_TestCase
     {
         $hosts = array('ip6-localhost', 'localhost', 'localhost.localdomain', strtolower(@php_uname('n')), '::1');
 
+        if(self::isTravisCI()) {
+            // Reverse lookup  does not work on Travis for ::1 ipv6 address
+            $hosts[] = null;
+        }
+
         $ip = IP::fromStringIP('::1');
         $this->assertContains($ip->getHostname(), $hosts, '::1 -> ip6-localhost');
+    }
+
+    /**
+     * Returns true if continuous integration running this request
+     * Useful to exclude tests which may fail only on this setup
+     */
+    public static function isTravisCI()
+    {
+        $travis = getenv('TRAVIS');
+        return !empty($travis);
     }
 
     public function testGetHostnameFailure()
