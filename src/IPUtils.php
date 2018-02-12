@@ -158,8 +158,6 @@ class IPUtils
             if ($ipRange === null) {
                 return null;
             }
-        } else if ((int) substr($ipRange, $pos + 1) <= 0) {
-            return null;
         }
 
         $pos   = strpos($ipRange, '/');
@@ -172,7 +170,12 @@ class IPUtils
 
         $lowLen = strlen($low);
         $bits   = (int) substr($ipRange, $pos + 1);
-        $octet  = $bits ? (int) (($bits + 7) / 8) : 0;
+        
+        if ($bits < 0 || $bits * 8 > $lowLen) {
+            return null;
+        }
+            
+        $octet = (int) (($bits + 7) / 8);
 
         for ($i = $octet; $i < $lowLen; $i++) {
             $low[$i]  = chr(0);
