@@ -244,7 +244,7 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array('', null),
             array('0', null),
             array('0.0.0.0/0', null),
-            array('192.168.255.255/0', null),
+            array('192.168.255.255/33', null),
             array('192.168.255.255/-1', null),
 
             // single IPv4
@@ -255,7 +255,7 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array('192.168.*.*', array("\xc0\xa8\x00\x00", "\xc0\xa8\xff\xff")),
             array('192.*.*.*', array("\xc0\x00\x00\x00", "\xc0\xff\xff\xff")),
             array('*.*.*.*', array("\x00\x00\x00\x00", "\xff\xff\xff\xff")),
-
+ 
             // single IPv4 in expected CIDR notation
             array('192.168.1.1/24', array("\xc0\xa8\x01\x00", "\xc0\xa8\x01\xff")),
 
@@ -301,6 +301,7 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array('192.168.255.255/3', array("\xc0\x00\x00\x00", "\xdf\xff\xff\xff")),
             array('192.168.255.255/2', array("\xc0\x00\x00\x00", "\xff\xff\xff\xff")),
             array('192.168.255.255/1', array("\x80\x00\x00\x00", "\xff\xff\xff\xff")),
+            array('0.0.0.0/0', array("\x00\x00\x00\x00", "\xff\xff\xff\xff")),
 
             // single IPv6
             array('::1', array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01")),
