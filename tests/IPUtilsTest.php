@@ -243,6 +243,8 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array(null, null),
             array('', null),
             array('0', null),
+            array('192.168.255.255/33', null),
+            array('192.168.255.255/-1', null),
 
             // single IPv4
             array('127.0.0.1', array("\x7f\x00\x00\x01", "\x7f\x00\x00\x01")),
@@ -252,7 +254,7 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array('192.168.*.*', array("\xc0\xa8\x00\x00", "\xc0\xa8\xff\xff")),
             array('192.*.*.*', array("\xc0\x00\x00\x00", "\xc0\xff\xff\xff")),
             array('*.*.*.*', array("\x00\x00\x00\x00", "\xff\xff\xff\xff")),
-
+ 
             // single IPv4 in expected CIDR notation
             array('192.168.1.1/24', array("\xc0\xa8\x01\x00", "\xc0\xa8\x01\xff")),
 
@@ -282,6 +284,23 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array('192.168.255.255/19', array("\xc0\xa8\xe0\x00", "\xc0\xa8\xff\xff")),
             array('192.168.255.255/18', array("\xc0\xa8\xc0\x00", "\xc0\xa8\xff\xff")),
             array('192.168.255.255/17', array("\xc0\xa8\x80\x00", "\xc0\xa8\xff\xff")),
+            array('192.168.255.255/16', array("\xc0\xa8\x00\x00", "\xc0\xa8\xff\xff")),
+            array('192.168.255.255/15', array("\xc0\xa8\x00\x00", "\xc0\xa9\xff\xff")),
+            array('192.168.255.255/14', array("\xc0\xa8\x00\x00", "\xc0\xab\xff\xff")),
+            array('192.168.255.255/13', array("\xc0\xa8\x00\x00", "\xc0\xaf\xff\xff")),
+            array('192.168.255.255/12', array("\xc0\xa0\x00\x00", "\xc0\xaf\xff\xff")),
+            array('192.168.255.255/11', array("\xc0\xa0\x00\x00", "\xc0\xbf\xff\xff")),
+            array('192.168.255.255/10', array("\xc0\x80\x00\x00", "\xc0\xbf\xff\xff")),
+            array('192.168.255.255/9', array("\xc0\x80\x00\x00", "\xc0\xff\xff\xff")),
+            array('192.168.255.255/8', array("\xc0\x00\x00\x00", "\xc0\xff\xff\xff")),
+            array('192.168.255.255/7', array("\xc0\x00\x00\x00", "\xc1\xff\xff\xff")),
+            array('192.168.255.255/6', array("\xc0\x00\x00\x00", "\xc3\xff\xff\xff")),
+            array('192.168.255.255/5', array("\xc0\x00\x00\x00", "\xc7\xff\xff\xff")),
+            array('192.168.255.255/4', array("\xc0\x00\x00\x00", "\xcf\xff\xff\xff")),
+            array('192.168.255.255/3', array("\xc0\x00\x00\x00", "\xdf\xff\xff\xff")),
+            array('192.168.255.255/2', array("\xc0\x00\x00\x00", "\xff\xff\xff\xff")),
+            array('192.168.255.255/1', array("\x80\x00\x00\x00", "\xff\xff\xff\xff")),
+            array('0.0.0.0/0', array("\x00\x00\x00\x00", "\xff\xff\xff\xff")),
 
             // single IPv6
             array('::1', array("\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01", "\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01")),
