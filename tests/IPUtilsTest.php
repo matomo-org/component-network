@@ -243,7 +243,6 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array(null, null),
             array('', null),
             array('0', null),
-            array('0.0.0.0/0', null),
             array('192.168.255.255/33', null),
             array('192.168.255.255/-1', null),
 
