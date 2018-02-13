@@ -107,7 +107,7 @@ abstract class IP
 
         $host = strtolower(@gethostbyaddr($stringIp));
 
-        if ($host === '' || $host === $stringIp) {
+        if ($host === '' || $host === $stringIp || strlen($host) !== strspn($host, 'abcdefghijklmnopqrstuvwxyz01234567890-.')) {
             return null;
         }
 
