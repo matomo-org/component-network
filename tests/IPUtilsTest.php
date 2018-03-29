@@ -245,6 +245,7 @@ class IPUtilsTest extends \PHPUnit_Framework_TestCase
             array('0', null),
             array('192.168.255.255/33', null),
             array('192.168.255.255/-1', null),
+            array('192.168.1.1/', null),
 
             // single IPv4
             array('127.0.0.1', array("\x7f\x00\x00\x01", "\x7f\x00\x00\x01")),

@@ -152,15 +152,15 @@ class IPUtils
      */
     public static function getIPRangeBounds($ipRange)
     {
-        if (strpos($ipRange, '/') === false) {
-            $ipRange = self::sanitizeIpRange($ipRange);
+        $ipRange = self::sanitizeIpRange($ipRange);
 
-            if ($ipRange === null) {
-                return null;
-            }
+        if ($ipRange === null ||
+            (($pos = strpos($ipRange, '/')) === false) ||
+            ($pos + 1 === strlen($ipRange))
+        ) {
+            return null;
         }
 
-        $pos   = strpos($ipRange, '/');
         $range = substr($ipRange, 0, $pos);
         $high  = $low = @inet_pton($range);
 
