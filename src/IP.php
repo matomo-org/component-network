@@ -103,11 +103,11 @@ abstract class IP
      */
     public function getHostname()
     {
-        $stringIp = $this->toString();
+        $ipString = $this->toString();
 
-        $host = strtolower(@gethostbyaddr($stringIp));
+        $host = strtolower(IPUtils::getHostByAddr($ipString));
 
-        if ($host === '' || $host === $stringIp) {
+        if ($host === '' || $host === $ipString) {
             return null;
         }
 

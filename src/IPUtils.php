@@ -16,6 +16,52 @@ namespace Piwik\Network;
  */
 class IPUtils
 {
+    const DNS_CACHE_SIZE = 100;
+
+    /**
+     * Get host by IP address
+     *
+     * @param string $ipString
+     * @return string
+     */
+    public static function getHostByAddr($ipString)
+    {
+        static $cache = [];
+
+        if (! array_key_exists($ipString, $cache)) {
+            $host = @gethostbyaddr($ipString);
+
+            // FIFO cache for performance
+            if (count($cache) > self::DNS_CACHE_SIZE) {
+                array_shift($cache);
+            }
+
+            // validate
+            if (strlen($host) !== strspn($host, 'abcdefghijklmnopqrstuvwxyz01234567890-.')) {
+                $host = null;
+            }
+
+            // convert IDN punycode to UTF-8 and validate
+            if ((substr($host, 0, 4) === 'xn--' || strpos($host, '.xn--') !== false) && extension_loaded('intl')) {
+                $host = idn_to_utf8($host, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+
+                if ($host === false || ! preg_match('/^[\p{L}\p{M}-.]{1,255}$/iu', $host)) {
+                    $host = null;
+                }
+            }
+
+            // enforce length per RFC 1035
+            if (strlen($host) > 255) {
+                $host = null;
+            }
+
+            $cache[$ipString] = $host;
+        }
+
+
+        return $cache[$ipString];
+    }
+
     /**
      * Removes the port and the last portion of a CIDR IP address.
      *
