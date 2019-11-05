@@ -10,11 +10,12 @@ namespace Tests\Piwik\Network;
 
 use Piwik\Network\IP;
 use Piwik\Network\IPUtils;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Piwik\Network\IP
  */
-class IPTest extends \PHPUnit_Framework_TestCase
+class IPTest extends TestCase
 {
     public function ipData()
     {
@@ -94,7 +95,7 @@ class IPTest extends \PHPUnit_Framework_TestCase
     public function testGetHostnameFailure()
     {
         $ip = IP::fromStringIP('0.1.2.3');
-        $this->assertSame(null, $ip->getHostname());
+        $this->assertNull($ip->getHostname());
     }
 
     public function getIpsInRangeData()

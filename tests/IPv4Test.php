@@ -9,11 +9,12 @@
 namespace Tests\Piwik\Network;
 
 use Piwik\Network\IP;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Piwik\Network\IPv4
  */
-class IPv4Test extends \PHPUnit_Framework_TestCase
+class IPv4Test extends TestCase
 {
     public function getIPv4Data()
     {
