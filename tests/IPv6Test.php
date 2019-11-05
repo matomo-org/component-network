@@ -10,11 +10,12 @@ namespace Tests\Piwik\Network;
 
 use Piwik\Network\IP;
 use Piwik\Network\IPv6;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Piwik\Network\IPv6
  */
-class IPv6Test extends \PHPUnit_Framework_TestCase
+class IPv6Test extends TestCase
 {
     public function getIPv6Data()
     {
