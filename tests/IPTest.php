@@ -35,6 +35,14 @@ class IPTest extends TestCase
         );
     }
 
+    public function emptyNullIpData()
+    {
+        return array(
+            array('', "\x00\x00\x00\x00", '0.0.0.0'),
+            array(null, "\x00\x00\x00\x00", '0.0.0.0')
+        );
+    }
+
     /**
      * @dataProvider ipData
      */
@@ -50,6 +58,20 @@ class IPTest extends TestCase
     }
 
     /**
+     * @dataProvider emptyNullIpData
+     */
+    public function testFromBinaryIPOnEmptyAndNull($ipAddress, $expectedBinary, $expectedStr)
+    {
+        $ip = IP::fromBinaryIP($ipAddress);
+
+        $this->assertInstanceOf('Piwik\Network\\IPv4', $ip);
+
+        $this->assertEquals($expectedBinary, $ip->toBinary());
+        $this->assertEquals($expectedStr, $ip->toString());
+        $this->assertEquals($expectedStr, (string) $ip);
+    }
+
+    /**
      * @dataProvider ipData
      */
     public function testFromStringIP($str, $binary)
@@ -59,6 +81,20 @@ class IPTest extends TestCase
         $this->assertEquals($binary, $ip->toBinary());
         $this->assertEquals($str, $ip->toString());
         $this->assertEquals($str, (string) $ip);
+    }
+
+    /**
+     * @dataProvider emptyNullIpData
+     */
+    public function testFromStringIPOnEmptyAndNull($ipAddress, $expectedBinary, $expectedStr)
+    {
+        $ip = IP::fromStringIP($ipAddress);
+
+        $this->assertInstanceOf('Piwik\Network\\IPv4', $ip);
+
+        $this->assertEquals($expectedBinary, $ip->toBinary());
+        $this->assertEquals($expectedStr, $ip->toString());
+        $this->assertEquals($expectedStr, (string) $ip);
     }
 
     public function testGetHostnameIPv4()
@@ -185,6 +221,14 @@ class IPTest extends TestCase
         );
     }
 
+    public function getEmptyIpRangeData()
+    {
+        return array(
+            array(''),
+            array(null)
+        );
+    }
+
     /**
      * @dataProvider getIpsInRangeData
      */
@@ -202,6 +246,23 @@ class IPTest extends TestCase
             $arrayRange[1] = IPUtils::binaryToStringIP($arrayRange[1]);
             $this->assertEquals($expected, $ip->isInRange($arrayRange), "$ip in $range");
         }
+    }
+
+    /**
+     * @dataProvider getEmptyIpRangeData
+     */
+    public function testIsInRangeOnEmptyIPRange($emptyRange)
+    {
+        $ip = IP::fromStringIP('127.0.0.1');
+
+        $this->assertFalse($ip->isInRange($emptyRange));
+    }
+
+    public function testIsInRangesOnEmptyIPRange()
+    {
+        $ip = IP::fromStringIP('127.0.0.1');
+
+        $this->assertFalse($ip->isInRanges(array()));
     }
 
     public function testIsInRangeWithInvalidRange()
