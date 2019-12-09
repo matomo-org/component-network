@@ -1,18 +1,18 @@
 <?php
 /**
- * Piwik - free/libre analytics platform
+ * Matomo - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link https://matomo.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL v3 or later
  */
 
-namespace Tests\Piwik\Network;
+namespace Tests\Matomo\Network;
 
-use Piwik\Network\IP;
+use Matomo\Network\IP;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Piwik\Network\IPv4
+ * @covers \Matomo\Network\IPv4
  */
 class IPv4Test extends TestCase
 {
@@ -32,7 +32,7 @@ class IPv4Test extends TestCase
     {
         $ip = IP::fromStringIP($stringIp);
 
-        $this->assertInstanceOf('Piwik\Network\IPv4', $ip);
+        $this->assertInstanceOf('Matomo\Network\IPv4', $ip);
 
         $this->assertEquals($expected, $ip->toIPv4String(), $stringIp);
     }
@@ -64,7 +64,7 @@ class IPv4Test extends TestCase
     {
         $ip = IP::fromStringIP($ipString);
 
-        $this->assertInstanceOf('Piwik\Network\IPv4', $ip);
+        $this->assertInstanceOf('Matomo\Network\IPv4', $ip);
 
         // each IP is tested with 0 to 4 octets masked
         for ($byteCount = 0; $byteCount <= 4; $byteCount++) {

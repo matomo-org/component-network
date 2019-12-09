@@ -1,19 +1,19 @@
 <?php
 /**
- * Piwik - free/libre analytics platform
+ * Matomo - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link https://matomo.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL v3 or later
  */
 
-namespace Tests\Piwik\Network;
+namespace Tests\Matomo\Network;
 
-use Piwik\Network\IP;
-use Piwik\Network\IPv6;
+use Matomo\Network\IP;
+use Matomo\Network\IPv6;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Piwik\Network\IPv6
+ * @covers \Matomo\Network\IPv6
  */
 class IPv6Test extends TestCase
 {
@@ -32,7 +32,7 @@ class IPv6Test extends TestCase
     {
         $ip = IP::fromStringIP($stringIp);
 
-        $this->assertInstanceOf('Piwik\Network\IPv6', $ip);
+        $this->assertInstanceOf('Matomo\Network\IPv6', $ip);
 
         $this->assertEquals($expected, $ip->toIPv4String(), $stringIp);
     }
@@ -88,7 +88,7 @@ class IPv6Test extends TestCase
     {
         $ip = IP::fromStringIP($ipString);
 
-        $this->assertInstanceOf('Piwik\Network\IPv6', $ip);
+        $this->assertInstanceOf('Matomo\Network\IPv6', $ip);
 
         // each IP is tested with 0 to 4 octets masked
         for ($byteCount = 0; $byteCount < 4; $byteCount++) {
@@ -125,7 +125,7 @@ class IPv6Test extends TestCase
     {
         $ip = IP::fromStringIP('::ffff:' . $ipString);
 
-        $this->assertInstanceOf('Piwik\Network\IPv6', $ip);
+        $this->assertInstanceOf('Matomo\Network\IPv6', $ip);
 
         // mask IPv4 mapped addresses
         for ($byteCount = 0; $byteCount <= 4; $byteCount++) {

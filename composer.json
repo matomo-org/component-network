@@ -1,15 +1,15 @@
 {
-    "name": "piwik/network",
+    "name": "matomo/network",
     "type": "library",
     "license": "LGPL-3.0",
     "autoload": {
         "psr-4": {
-            "Piwik\\Network\\": "src/"
+            "Matomo\\Network\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Piwik\\Network\\": "tests/"
+            "Tests\\Matomo\\Network\\": "tests/"
         }
     },
     "require": {

@@ -1,19 +1,19 @@
 <?php
 /**
- * Piwik - free/libre analytics platform
+ * Matomo - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link https://matomo.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL v3 or later
  */
 
-namespace Tests\Piwik\Network;
+namespace Tests\Matomo\Network;
 
-use Piwik\Network\IP;
-use Piwik\Network\IPUtils;
+use Matomo\Network\IP;
+use Matomo\Network\IPUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Piwik\Network\IP
+ * @covers \Matomo\Network\IP
  */
 class IPTest extends TestCase
 {
@@ -50,7 +50,7 @@ class IPTest extends TestCase
     {
         $ip = IP::fromBinaryIP($binary);
 
-        $this->assertInstanceOf('Piwik\Network\\' . $class, $ip);
+        $this->assertInstanceOf('Matomo\Network\\' . $class, $ip);
 
         $this->assertEquals($binary, $ip->toBinary());
         $this->assertEquals($str, $ip->toString());
@@ -64,7 +64,7 @@ class IPTest extends TestCase
     {
         $ip = IP::fromBinaryIP($ipAddress);
 
-        $this->assertInstanceOf('Piwik\Network\\IPv4', $ip);
+        $this->assertInstanceOf('Matomo\Network\\IPv4', $ip);
 
         $this->assertEquals($expectedBinary, $ip->toBinary());
         $this->assertEquals($expectedStr, $ip->toString());
@@ -90,7 +90,7 @@ class IPTest extends TestCase
     {
         $ip = IP::fromStringIP($ipAddress);
 
-        $this->assertInstanceOf('Piwik\Network\\IPv4', $ip);
+        $this->assertInstanceOf('Matomo\Network\\IPv4', $ip);
 
         $this->assertEquals($expectedBinary, $ip->toBinary());
         $this->assertEquals($expectedStr, $ip->toString());
