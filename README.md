@@ -3,7 +3,6 @@
 Component providing Network tools.
 
 [![Build Status](https://travis-ci.org/matomo-org/component-network.svg?branch=master)](https://travis-ci.org/matomo-org/component-network)
-[![Coverage Status](https://coveralls.io/repos/matomo-org/component-network/badge.png?branch=master)](https://coveralls.io/r/matomo-org/component-network?branch=master)
 
 ## Installation
 
