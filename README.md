@@ -1,9 +1,8 @@
-# Piwik/Network
+# Matomo/Network
 
 Component providing Network tools.
 
 [![Build Status](https://travis-ci.org/matomo-org/component-network.svg?branch=master)](https://travis-ci.org/matomo-org/component-network)
-[![Coverage Status](https://coveralls.io/repos/matomo-org/component-network/badge.png?branch=master)](https://coveralls.io/r/matomo-org/component-network?branch=master)
 
 ## Installation
 
@@ -12,7 +11,7 @@ With Composer:
 ```json
 {
     "require": {
-        "piwik/network": "*"
+        "matomo/network": "*"
     }
 }
 ```
@@ -21,7 +20,7 @@ With Composer:
 
 ### IP
 
-To manipulate an IP address, you can use the `Piwik\Network\IP` class:
+To manipulate an IP address, you can use the `Matomo\Network\IP` class:
 
 ```php
 $ip = IP::fromStringIP('127.0.0.1');
@@ -47,7 +46,7 @@ if ($ip->isInRange('192.168.*.*')) {}
 $ip->anonymize(2);
 ```
 
-The `Piwik\Network\IPUtils` class provides utility methods:
+The `Matomo\Network\IPUtils` class provides utility methods:
 
 ```php
 echo IPUtils::binaryToStringIP("\x7F\x00\x00\x01");

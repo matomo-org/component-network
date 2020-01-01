@@ -1,18 +1,18 @@
 <?php
 /**
- * Piwik - free/libre analytics platform
+ * Matomo - free/libre analytics platform
  *
- * @link http://piwik.org
+ * @link https://matomo.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL v3 or later
  */
 
-namespace Tests\Piwik\Network;
+namespace Tests\Matomo\Network;
 
-use Piwik\Network\IPUtils;
+use Matomo\Network\IPUtils;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers Piwik\Network\IPUtils
+ * @covers Matomo\Network\IPUtils
  */
 class IPUtilsTest extends TestCase
 {
