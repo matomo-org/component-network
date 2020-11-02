@@ -2,7 +2,7 @@
 
 Component providing Network tools.
 
-[![Build Status](https://travis-ci.org/matomo-org/component-network.svg?branch=master)](https://travis-ci.org/matomo-org/component-network)
+[![Build Status](https://travis-ci.com/matomo-org/component-network.svg?branch=master)](https://travis-ci.com/matomo-org/component-network)
 
 ## Installation
 
