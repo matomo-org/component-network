@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class IPv4Test extends TestCase
 {
-    public function getIPv4Data()
+    public static function getIPv4Data()
     {
         return array(
             array(null, '0.0.0.0'),
@@ -37,7 +37,7 @@ class IPv4Test extends TestCase
         $this->assertEquals($expected, $ip->toIPv4String());
     }
 
-    public function getAddressesToAnonymize()
+    public static function getAddressesToAnonymize()
     {
         return array(
             // ip, array( expected0, expected1, expected2, expected3, expected4 ),
