@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 class IPTest extends TestCase
 {
-    public function ipData()
+    public static function ipData()
     {
         return array(
             // IPv4
@@ -35,7 +35,7 @@ class IPTest extends TestCase
         );
     }
 
-    public function emptyNullIpData()
+    public static function emptyNullIpData()
     {
         return array(
             array('', "\x00\x00\x00\x00", '0.0.0.0'),
@@ -134,7 +134,7 @@ class IPTest extends TestCase
         $this->assertNull($ip->getHostname());
     }
 
-    public function getIpsInRangeData()
+    public static function getIpsInRangeData()
     {
         return array(
             array('192.168.1.10', array(
@@ -221,7 +221,7 @@ class IPTest extends TestCase
         );
     }
 
-    public function getEmptyIpRangeData()
+    public static function getEmptyIpRangeData()
     {
         return array(
             array(''),
