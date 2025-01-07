@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 class IPv6Test extends TestCase
 {
-    public function getIPv6Data()
+    public static function getIPv6Data()
     {
         return array(
             array('::ffff:192.168.0.1', '192.168.0.1'),
@@ -37,7 +37,7 @@ class IPv6Test extends TestCase
         $this->assertEquals($expected, $ip->toIPv4String(), $stringIp);
     }
 
-    public function getMappedIPv4Data()
+    public static function getMappedIPv4Data()
     {
         return array(
             array(IP::fromStringIP('::ffff:192.168.0.1'), true),
@@ -63,7 +63,7 @@ class IPv6Test extends TestCase
         $this->assertEquals($isMapped, $ip->isMappedIPv4(), $ip);
     }
 
-    public function getAddressesToAnonymize()
+    public static function getAddressesToAnonymize()
     {
         return array(
             array('2001:db8:0:8d3:0:8a2e:70:7344', array(
@@ -100,7 +100,7 @@ class IPv6Test extends TestCase
     }
 
 
-    public function getIPv4AddressesToAnonymize()
+    public static function getIPv4AddressesToAnonymize()
     {
         return array(
             // ip, array( expected0, expected1, expected2, expected3, expected4 ),
