@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class IPUtilsTest extends TestCase
 {
-    public function getIPSanitizationData()
+    public static function getIPSanitizationData()
     {
         return array( // input, output
             // single IPv4 address
@@ -66,7 +66,7 @@ class IPUtilsTest extends TestCase
         $this->assertEquals($expected, IPUtils::sanitizeIp($ip));
     }
 
-    public function getIPRangeSanitizationData()
+    public static function getIPRangeSanitizationData()
     {
         return array(
             array('', null),
@@ -136,7 +136,7 @@ class IPUtilsTest extends TestCase
         $this->assertSame($expected, IPUtils::sanitizeIpRange($ip));
     }
 
-    public function getIPData()
+    public static function getIPData()
     {
         return array(
             // IPv4
@@ -162,7 +162,7 @@ class IPUtilsTest extends TestCase
         $this->assertEquals($binary, IPUtils::stringToBinaryIP($string));
     }
 
-    public function getInvalidIPData()
+    public static function getInvalidIPData()
     {
         return array(
             // not a series of dotted numbers
@@ -194,7 +194,7 @@ class IPUtilsTest extends TestCase
         $this->assertEquals("\x00\x00\x00\x00", IPUtils::stringToBinaryIP($stringIp));
     }
 
-    public function getBinaryIPData()
+    public static function getBinaryIPData()
     {
         // a valid network address is either 4 or 16 bytes; those lines are intentionally left blank ;)
         return array(
@@ -236,7 +236,7 @@ class IPUtilsTest extends TestCase
         $this->assertEquals('0.0.0.0', IPUtils::binaryToStringIP($binary), bin2hex($binary));
     }
 
-    public function getBoundsForIPRangeTest()
+    public static function getBoundsForIPRangeTest()
     {
         return array(
 
