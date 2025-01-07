@@ -34,7 +34,7 @@ class IPv4Test extends TestCase
 
         $this->assertInstanceOf('Matomo\Network\IPv4', $ip);
 
-        $this->assertEquals($expected, $ip->toIPv4String(), $stringIp);
+        $this->assertEquals($expected, $ip->toIPv4String());
     }
 
     public function getAddressesToAnonymize()
