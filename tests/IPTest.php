@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Matomo\Network\IP
  */
+#[\PHPUnit\Framework\Attributes\CoversClass(\Matomo\Network\IP::class)]
 class IPTest extends TestCase
 {
     public static function ipData()
@@ -46,6 +47,7 @@ class IPTest extends TestCase
     /**
      * @dataProvider ipData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('ipData')]
     public function testFromBinaryIP($str, $binary, $class)
     {
         $ip = IP::fromBinaryIP($binary);
@@ -60,6 +62,7 @@ class IPTest extends TestCase
     /**
      * @dataProvider emptyNullIpData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('emptyNullIpData')]
     public function testFromBinaryIPOnEmptyAndNull($ipAddress, $expectedBinary, $expectedStr)
     {
         $ip = IP::fromBinaryIP($ipAddress);
@@ -74,7 +77,8 @@ class IPTest extends TestCase
     /**
      * @dataProvider ipData
      */
-    public function testFromStringIP($str, $binary)
+    #[\PHPUnit\Framework\Attributes\DataProvider('ipData')]
+    public function testFromStringIP($str, $binary, $unused)
     {
         $ip = IP::fromStringIP($str);
 
@@ -86,6 +90,7 @@ class IPTest extends TestCase
     /**
      * @dataProvider emptyNullIpData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('emptyNullIpData')]
     public function testFromStringIPOnEmptyAndNull($ipAddress, $expectedBinary, $expectedStr)
     {
         $ip = IP::fromStringIP($ipAddress);
@@ -232,6 +237,7 @@ class IPTest extends TestCase
     /**
      * @dataProvider getIpsInRangeData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIpsInRangeData')]
     public function testIsInRange($range, $test)
     {
         foreach ($test as $stringIp => $expected) {
@@ -251,6 +257,7 @@ class IPTest extends TestCase
     /**
      * @dataProvider getEmptyIpRangeData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getEmptyIpRangeData')]
     public function testIsInRangeOnEmptyIPRange($emptyRange)
     {
         $ip = IP::fromStringIP('127.0.0.1');
@@ -275,6 +282,7 @@ class IPTest extends TestCase
     /**
      * @dataProvider getIpsInRangeData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIpsInRangeData')]
     public function testIsInRanges($range, $test)
     {
         foreach ($test as $stringIp => $expected) {
