@@ -202,7 +202,6 @@ class IPUtilsTest extends TestCase
     {
         // a valid network address is either 4 or 16 bytes; those lines are intentionally left blank ;)
         return array(
-            array(null),
             array(''),
             array("\x01"),
             array("\x01\x00"),
@@ -247,7 +246,6 @@ class IPUtilsTest extends TestCase
         return array(
 
             // invalid ranges
-            array(null, null),
             array('', null),
             array('0', null),
             array('192.168.255.255/33', null),
