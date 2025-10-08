@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Matomo\Network\IPv6
  */
+#[\PHPUnit\Framework\Attributes\CoversClass(\Matomo\Network\IPv6::class)]
 class IPv6Test extends TestCase
 {
     public static function getIPv6Data()
@@ -28,6 +29,7 @@ class IPv6Test extends TestCase
     /**
      * @dataProvider getIPv6Data
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIPv6Data')]
     public function testToIPv4String($stringIp, $expected)
     {
         $ip = IP::fromStringIP($stringIp);
@@ -58,6 +60,7 @@ class IPv6Test extends TestCase
     /**
      * @dataProvider getMappedIPv4Data
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getMappedIPv4Data')]
     public function testIsMappedIPv4(IPv6 $ip, $isMapped)
     {
         $this->assertEquals($isMapped, $ip->isMappedIPv4(), $ip);
@@ -86,6 +89,7 @@ class IPv6Test extends TestCase
     /**
      * @dataProvider getAddressesToAnonymize
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getAddressesToAnonymize')]
     public function testAnonymize($ipString, $expected)
     {
         $ip = IP::fromStringIP($ipString);
@@ -123,6 +127,7 @@ class IPv6Test extends TestCase
     /**
      * @dataProvider getIPv4AddressesToAnonymize
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIPv4AddressesToAnonymize')]
     public function testAnonymizeIPv4MappedAdresses($ipString, $expected)
     {
         $ip = IP::fromStringIP('::ffff:' . $ipString);

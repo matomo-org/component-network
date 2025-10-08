@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Matomo\Network\IPv4
  */
+#[\PHPUnit\Framework\Attributes\CoversClass(\Matomo\Network\IPv4::class)]
 class IPv4Test extends TestCase
 {
     public static function getIPv4Data()
@@ -28,6 +29,7 @@ class IPv4Test extends TestCase
     /**
      * @dataProvider getIPv4Data
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIPv4Data')]
     public function testToIPv4String($stringIp, $expected)
     {
         $ip = IP::fromStringIP($stringIp);
@@ -60,6 +62,7 @@ class IPv4Test extends TestCase
     /**
      * @dataProvider getAddressesToAnonymize
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getAddressesToAnonymize')]
     public function testAnonymize($ipString, $expected)
     {
         $ip = IP::fromStringIP($ipString);

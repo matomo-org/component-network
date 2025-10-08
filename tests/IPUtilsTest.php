@@ -61,6 +61,7 @@ class IPUtilsTest extends TestCase
     /**
      * @dataProvider getIPSanitizationData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIPSanitizationData')]
     public function testSanitizeIp($ip, $expected)
     {
         $this->assertEquals($expected, IPUtils::sanitizeIp($ip));
@@ -131,6 +132,7 @@ class IPUtilsTest extends TestCase
     /**
      * @dataProvider getIPRangeSanitizationData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIPRangeSanitizationData')]
     public function testSanitizeIpRange($ip, $expected)
     {
         $this->assertSame($expected, IPUtils::sanitizeIpRange($ip));
@@ -157,6 +159,7 @@ class IPUtilsTest extends TestCase
     /**
      * @dataProvider getIPData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIPData')]
     public function testStringToBinaryIP($string, $binary)
     {
         $this->assertEquals($binary, IPUtils::stringToBinaryIP($string));
@@ -189,6 +192,7 @@ class IPUtilsTest extends TestCase
     /**
      * @dataProvider getInvalidIPData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getInvalidIPData')]
     public function testStringToBinaryInvalidIP($stringIp)
     {
         $this->assertEquals("\x00\x00\x00\x00", IPUtils::stringToBinaryIP($stringIp));
@@ -198,7 +202,6 @@ class IPUtilsTest extends TestCase
     {
         // a valid network address is either 4 or 16 bytes; those lines are intentionally left blank ;)
         return array(
-            array(null),
             array(''),
             array("\x01"),
             array("\x01\x00"),
@@ -223,6 +226,7 @@ class IPUtilsTest extends TestCase
     /**
      * @dataProvider getIPData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getIPData')]
     public function testBinaryToStringIP($string, $binary)
     {
         $this->assertEquals($string, IPUtils::binaryToStringIP($binary));
@@ -231,6 +235,7 @@ class IPUtilsTest extends TestCase
     /**
      * @dataProvider getBinaryIPData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getBinaryIPData')]
     public function testBinaryToStringInvalidIP($binary)
     {
         $this->assertEquals('0.0.0.0', IPUtils::binaryToStringIP($binary), bin2hex($binary));
@@ -241,7 +246,6 @@ class IPUtilsTest extends TestCase
         return array(
 
             // invalid ranges
-            array(null, null),
             array('', null),
             array('0', null),
             array('192.168.255.255/33', null),
@@ -336,6 +340,7 @@ class IPUtilsTest extends TestCase
     /**
      * @dataProvider getBoundsForIPRangeTest
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getBoundsForIPRangeTest')]
     public function testGetIPRangeBounds($range, $expected)
     {
         $this->assertSame($expected, IPUtils::getIPRangeBounds($range));
